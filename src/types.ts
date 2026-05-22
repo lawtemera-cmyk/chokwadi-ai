@@ -1,6 +1,6 @@
-export type Verdict = "True" | "False" | "Misleading" | "Unverified" | "Demo Mode";
+export type Verdict = "True" | "False" | "Misleading" | "Unproven";
 
-export type SourceStance = "supporting" | "contradicting" | "neutral";
+export type SourceStance = "Agree" | "Contradict" | "Neutral";
 
 export interface Source {
   title: string;
