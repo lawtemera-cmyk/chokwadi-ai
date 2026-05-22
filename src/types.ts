@@ -1,11 +1,12 @@
-export type Verdict = 'True' | 'False' | 'Misleading' | 'Unproven';
-export type SourceStance = 'Agree' | 'Contradict' | 'Neutral';
+export type Verdict = "True" | "False" | "Misleading" | "Unverified" | "Demo Mode";
+
+export type SourceStance = "supporting" | "contradicting" | "neutral";
 
 export interface Source {
   title: string;
   domain: string;
-  url?: string;
   stance: SourceStance;
+  url: string;
 }
 
 export interface VerificationResult {
