@@ -1,23 +1,11 @@
-export type Verdict = "True" | "False" | "Misleading" | "Unproven" | "Demo Mode";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-export type SourceStance = "Agree" | "Contradict" | "Neutral";
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  build: {
+    outDir: 'dist'
+  }
+})
 
-export interface Source {
-  title: string;
-  domain: string;
-  stance: SourceStance;
-  url: string;
-}
-
-export interface VerificationResult {
-  verdict: Verdict;
-  confidence: number;
-  explanation: string;
-  sources: Source[];
-}
-
-export type VerificationState =
-  | { status: 'idle' }
-  | { status: 'loading' }
-  | { status: 'success'; result: VerificationResult }
-  | { status: 'error'; message: string };
