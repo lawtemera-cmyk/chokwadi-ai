@@ -15,6 +15,7 @@ export async function verifyClaim(claim: string): Promise<VerificationResult> {
     }),
   }).catch(err => console.warn('Logging failed:', err));
 
+  // Return demo response so UI works smoothly
   return {
     verdict: "Unproven",
     confidence: 0,
@@ -29,4 +30,5 @@ export async function verifyClaim(claim: string): Promise<VerificationResult> {
     ]
   };
 }
+
 
