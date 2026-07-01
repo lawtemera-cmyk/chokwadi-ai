@@ -1,4 +1,4 @@
-export type Verdict = "True" | "False" | "Misleading" | "Unproven";
+export type Verdict = "True" | "False" | "Misleading" | "Unproven" | "Unknown";
 
 export type SourceStance = "Agree" | "Contradict" | "Neutral";
 
