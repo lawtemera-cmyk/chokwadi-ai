@@ -44,7 +44,7 @@ export async function verifyClaim(claim: string): Promise<VerificationResult> {
     console.error('Verification error:', error);
     // Return a safe fallback that matches the type
     return {
-      verdict: 'Error',
+      verdict: 'Unknown',  // Changed from 'Error' to 'Unknown'
       confidence: 0,
       explanation: error instanceof Error ? error.message : 'Verification failed. Please try again.',
       sources: [
