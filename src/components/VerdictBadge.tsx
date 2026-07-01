@@ -1,7 +1,10 @@
-import { Verdict } from '../types';
+import type { Verdict } from '../types';
+
+type VerdictSize = 'sm' | 'md' | 'lg';
 
 interface VerdictBadgeProps {
   verdict: Verdict;
+  size?: VerdictSize; // Optional size prop
 }
 
 const verdictConfig: Record<Verdict, { label: string; className: string; dotColor: string }> = {
@@ -12,11 +15,24 @@ const verdictConfig: Record<Verdict, { label: string; className: string; dotColo
   Unknown: { label: 'Unknown', className: 'text-gray-700 bg-gray-50', dotColor: 'bg-gray-400' },
 };
 
-export function VerdictBadge({ verdict }: VerdictBadgeProps) {
+export function VerdictBadge({ verdict, size = 'md' }: VerdictBadgeProps) {
   const config = verdictConfig[verdict];
+  
+  const sizeClasses = {
+    sm: 'text-xs px-2 py-0.5 gap-1',
+    md: 'text-sm px-3 py-1 gap-1.5',
+    lg: 'text-base px-4 py-1.5 gap-2',
+  };
+  
+  const dotSizes = {
+    sm: 'w-1 h-1',
+    md: 'w-1.5 h-1.5',
+    lg: 'w-2 h-2',
+  };
+
   return (
-    <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-medium ${config.className}`}>
-      <span className={`w-1.5 h-1.5 rounded-full ${config.dotColor}`}></span>
+    <span className={`inline-flex items-center rounded-full ${config.className} ${sizeClasses[size]}`}>
+      <span className={`rounded-full ${config.dotColor} ${dotSizes[size]}`}></span>
       {config.label}
     </span>
   );
