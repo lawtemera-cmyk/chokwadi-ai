@@ -3,7 +3,7 @@ import type { VerificationResult } from './types';
 const PIPEDREAM_WEBHOOK = 'https://eov7k19rfqd9gyh.m.pipedream.net';
 
 export async function verifyClaim(claim: string): Promise<VerificationResult> {
-  // Send data to Pipedream for logging (keep this)
+  // Log to Pipedream
   fetch(PIPEDREAM_WEBHOOK, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -14,28 +14,24 @@ export async function verifyClaim(claim: string): Promise<VerificationResult> {
   }).catch(err => console.warn('Logging failed:', err));
 
   try {
-    // Call your Netlify Function
     const response = await fetch('/.netlify/functions/verify-claim', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ claim }),
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Verification failed');
+      throw new Error(`HTTP error ${response.status}`);
     }
 
     const data = await response.json();
 
-    // Return the data in the format your frontend expects
+    // Ensure the response matches the VerificationResult type
     return {
       verdict: data.verdict || 'Unproven',
-      confidence: data.confidence_score || 0,
+      confidence: typeof data.confidence_score === 'number' ? data.confidence_score : 0,
       explanation: data.explanation || 'No explanation available',
-      sources: data.sources || [
+      sources: Array.isArray(data.sources) ? data.sources : [
         {
           title: 'Chokwadi AI',
           domain: 'chokwadi.ai',
@@ -46,11 +42,11 @@ export async function verifyClaim(claim: string): Promise<VerificationResult> {
     };
   } catch (error) {
     console.error('Verification error:', error);
-    // Return a fallback response if the agent fails
+    // Return a safe fallback that matches the type
     return {
       verdict: 'Error',
       confidence: 0,
-      explanation: error instanceof Error ? error.message : 'Failed to verify claim. Please try again.',
+      explanation: error instanceof Error ? error.message : 'Verification failed. Please try again.',
       sources: [
         {
           title: 'Chokwadi AI',
@@ -62,3 +58,4 @@ export async function verifyClaim(claim: string): Promise<VerificationResult> {
     };
   }
 }
+
